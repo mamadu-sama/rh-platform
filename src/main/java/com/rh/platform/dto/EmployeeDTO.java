@@ -24,6 +24,11 @@ public class EmployeeDTO {
     @Email(message = "Formato de email inválido")
     private String email;
 
+    @NotBlank(message = "A senha é obrigatória")
+    private String password;
+
+    private String role;
+
     @NotNull(message = "A taxa horária é obrigatória")
     @Positive(message = "A taxa horária deve ser positiva")
     private BigDecimal hourlyRate;

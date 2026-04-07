@@ -5,6 +5,7 @@ Este projeto é um portal de recursos humanos desenvolvido para registar as hora
 ## Funcionalidades
 
 * **Gestão de Funcionários:** Criação e listagem de funcionários com definição da respetiva taxa horária.
+* **Autenticação e Autorização:** Sistema de Login com JWT (JSON Web Tokens). Rotas protegidas por permissões (ADMIN vs USER).
 * **Registo de Horas:** Registo diário de horas trabalhadas por cada funcionário.
 * **Cálculo de Horas Extras:** O sistema assume uma jornada de 8 horas diárias. Qualquer valor superior é contabilizado como hora extra (com um acréscimo de 50% na taxa horária).
 * **Relatórios Mensais:** Geração de relatórios agregados por mês, detalhando o total de horas regulares, horas extras e o montante total a pagar ao funcionário.
@@ -13,6 +14,7 @@ Este projeto é um portal de recursos humanos desenvolvido para registar as hora
 
 * **Java 17:** Linguagem de programação principal.
 * **Spring Boot 3.2.4:** Framework para construção da aplicação e da API REST.
+* **Spring Security e JWT:** Camada de proteção de rotas e autenticação stateless.
 * **Spring Data JPA:** Abstração para persistência de dados.
 * **PostgreSQL:** Base de dados relacional.
 * **Docker e Docker Compose:** Ferramentas para contentorização da base de dados e simplificação do ambiente local.
@@ -62,15 +64,35 @@ O projeto segue uma arquitetura clássica dividida em camadas, garantindo a sepa
 
 Abaixo encontra-se a referência completa das rotas disponíveis no sistema. Pode testar estes endpoints utilizando ferramentas como Insomnia ou Postman. Todos os pedidos são feitos para o caminho base `http://localhost:8080`.
 
+⚠️ **Atenção:** À exceção do Registo e Login, todos os outros endpoints exigem o cabeçalho `Authorization: Bearer <SEU_TOKEN_AQUI>`.
+
+### 🔐 Autenticação (`/api/auth`)
+
+| Método | Rota | Descrição | Acesso |
+| :--- | :--- | :--- | :--- |
+| **POST** | `/api/auth/register` | Regista um novo funcionário e retorna o Token | Público |
+| **POST** | `/api/auth/authenticate` | Faz login e retorna o Token | Público |
+
+**Exemplo de Registo (POST /api/auth/register)**
+```json
+{
+  "name": "Maria Silva",
+  "email": "maria@example.com",
+  "password": "senha_segura",
+  "role": "ADMIN",
+  "hourlyRate": 25.50
+}
+```
+
 ### 👥 Funcionários (`/api/employees`)
 
-| Método | Rota | Descrição |
-| :--- | :--- | :--- |
-| **POST** | `/api/employees` | Cria um novo funcionário |
-| **GET** | `/api/employees` | Retorna a lista de todos os funcionários |
-| **GET** | `/api/employees/{id}` | Retorna os detalhes de um funcionário específico através do ID |
-| **PUT** | `/api/employees/{id}` | Atualiza os dados de um funcionário existente |
-| **DELETE** | `/api/employees/{id}` | Remove um funcionário do sistema |
+| Método | Rota | Descrição | Acesso |
+| :--- | :--- | :--- | :--- |
+| **POST** | `/api/employees` | Cria um novo funcionário | ADMIN |
+| **GET** | `/api/employees` | Retorna a lista de todos os funcionários | ADMIN |
+| **GET** | `/api/employees/{id}` | Retorna os detalhes de um funcionário | Autenticado |
+| **PUT** | `/api/employees/{id}` | Atualiza os dados de um funcionário existente | ADMIN |
+| **DELETE** | `/api/employees/{id}` | Remove um funcionário do sistema | ADMIN |
 
 **Exemplo de Pedido: Criar Funcionário (POST)**
 ```json
