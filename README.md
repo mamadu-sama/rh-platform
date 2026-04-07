@@ -56,7 +56,7 @@ O projeto segue uma arquitetura clássica dividida em camadas, garantindo a sepa
    ```bash
    mvn spring-boot:run
    ```
-   **Nota:** Se não tiver o Maven instalado na sua máquina, pode executar a aplicação diretamente através da sua IDE (IntelliJ IDEA, Eclipse, VS Code ou Trae). Basta abrir a classe `RhPlatformApplication.java` e clicar no botão "Run" (ou "Play") ao lado do método `main`.
+   **Nota:** Se não tiver o Maven instalado na sua máquina, pode executar a aplicação diretamente através da sua IDE (IntelliJ IDEA, Eclipse, VS Code ou outro IDE). Basta abrir a classe `RhPlatformApplication.java` e clicar no botão "Run" (ou "Play") ao lado do método `main`.
    
    A API ficará disponível em `http://localhost:8080`.
 
