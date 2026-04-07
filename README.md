@@ -84,6 +84,20 @@ Abaixo encontra-se a referência completa das rotas disponíveis no sistema. Pod
 }
 ```
 
+**Exemplo de Login (POST /api/auth/authenticate)**
+```json
+{
+  "email": "maria@example.com",
+  "password": "senha_segura"
+}
+```
+**Resposta (Token JWT):**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
 ### 👥 Funcionários (`/api/employees`)
 
 | Método | Rota | Descrição | Acesso |
@@ -105,13 +119,13 @@ Abaixo encontra-se a referência completa das rotas disponíveis no sistema. Pod
 
 ### ⏱️ Registo de Horas (`/api/time-records`)
 
-| Método | Rota | Descrição |
-| :--- | :--- | :--- |
-| **POST** | `/api/time-records` | Regista horas trabalhadas para um funcionário |
-| **GET** | `/api/time-records/{id}` | Retorna os detalhes de um registo de horas pelo seu ID |
-| **GET** | `/api/time-records/employee/{employeeId}` | Retorna os registos de horas num intervalo de datas (requer query params `startDate` e `endDate`) |
-| **PUT** | `/api/time-records/{id}` | Atualiza os dados de um registo de horas existente |
-| **DELETE** | `/api/time-records/{id}` | Remove um registo de horas do sistema |
+| Método | Rota | Descrição | Acesso |
+| :--- | :--- | :--- | :--- |
+| **POST** | `/api/time-records` | Regista horas trabalhadas para um funcionário | Autenticado |
+| **GET** | `/api/time-records/{id}` | Retorna os detalhes de um registo de horas pelo seu ID | Autenticado |
+| **GET** | `/api/time-records/employee/{employeeId}` | Retorna os registos de horas num intervalo de datas | Autenticado |
+| **PUT** | `/api/time-records/{id}` | Atualiza os dados de um registo de horas existente | Autenticado |
+| **DELETE** | `/api/time-records/{id}` | Remove um registo de horas do sistema | Autenticado |
 
 **Exemplo de Pedido: Registar Horas (POST)**
 ```json
@@ -128,12 +142,13 @@ Abaixo encontra-se a referência completa das rotas disponíveis no sistema. Pod
 
 ### 📊 Relatórios (`/api/reports`)
 
-| Método | Rota | Descrição |
-| :--- | :--- | :--- |
-| **GET** | `/api/reports/monthly/{employeeId}` | Gera o relatório de pagamentos (requer query params `year` e `month`) |
+| Método | Rota | Descrição | Acesso |
+| :--- | :--- | :--- | :--- |
+| **GET** | `/api/reports/monthly/{employeeId}` | Gera o relatório de pagamentos (requer query params `year` e `month`) | ADMIN |
 
 **Exemplo de Pedido: Obter Relatório Mensal (GET)**
 `GET /api/reports/monthly/1?year=2024&month=5`
+*Header Obrigatório:* `Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...`
 
 **Resposta Esperada (JSON):**
 ```json
